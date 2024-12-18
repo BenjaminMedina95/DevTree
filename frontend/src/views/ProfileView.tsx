@@ -21,6 +21,7 @@ export default function ProfileView() {
         onError: (error) =>{
          toast.error(error.message);
           
+        
         },
         onSuccess: (data) =>{
           toast.success(data)
