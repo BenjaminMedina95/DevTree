@@ -22,19 +22,15 @@ export async function getUser() {
     }
 }
 
-export async function updateProfile(formData: ProfileForm) {
+export async function updateProfile(formData: User) {
 
     try {
         const { data } = await api.patch<string>('/user', formData)        
         return data
     }
     catch (error) {
-        if (isAxiosError(error) && error.response) {
-            console.log(error.response.data.error);
-            
+        if (isAxiosError(error) && error.response) {           
             throw new Error(error.response.data.error)
-
-
         }
 
     }
