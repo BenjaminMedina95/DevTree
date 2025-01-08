@@ -60,6 +60,7 @@ export default function LinkTreeView() {
     setDevTreeLinks(updatedLinks)
     let updatedItems: SocialNetwork[] = []
     const selectedSocialNetwork = updatedLinks.find(link=> link.name === socialNetwork)
+    //link habilitado
     if(selectedSocialNetwork?.enabled){
       const id= links.filter(link => link.id).length +1
       if(links.some(link => link.name === socialNetwork)){
@@ -85,26 +86,26 @@ export default function LinkTreeView() {
       }
     }
     else{
-      const indexToUpdate = links.findIndex(link => link.name === socialNetwork)
-      updatedItems= links.map(link => {
-        if(link.name ===socialNetwork){
-          return{
-            ...link,
-            id: 0,
-            enabled:false
-          }
+      //link deshabilitados
+      const indexToDisable = links.findIndex((link) => link.name === socialNetwork);
+ 
+      updatedItems = links.map((link) => {
+        if (link.name === socialNetwork) {
+          return { 
+            ...link, 
+            id: 0, 
+            enabled: false 
+          };
+        } else if (link.id > links[indexToDisable].id) { 
+          return { 
+            ...link, 
+            id: link.id - 1 
+          }; 
+        } else {
+          return link;
         }
-        else if (link.id > indexToUpdate && (indexToUpdate !== 0 && link.id == 1)){
-          return {
-            ...link,
-            id: link.id -1
-          }
-        }
-        else{
-          return link
-        }
-      })   
-    }   
+      });
+    } 
     //Almacena en la base de datos
     queryClient.setQueryData(['user'], (prevData:User) =>{
       return{
