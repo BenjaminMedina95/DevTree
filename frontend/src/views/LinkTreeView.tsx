@@ -85,7 +85,7 @@ export default function LinkTreeView() {
       }
     }
     else{
-      const indexUpdate = links.findIndex(link => link.name === socialNetwork)
+      const indexToUpdate = links.findIndex(link => link.name === socialNetwork)
       updatedItems= links.map(link => {
         if(link.name ===socialNetwork){
           return{
@@ -94,7 +94,7 @@ export default function LinkTreeView() {
             enabled:false
           }
         }
-        else if (link.id > indexUpdate){
+        else if (link.id > indexToUpdate && (indexToUpdate !== 0 && link.id == 1)){
           return {
             ...link,
             id: link.id -1
@@ -127,7 +127,7 @@ export default function LinkTreeView() {
       ))}
         <button 
           className='bg-cyan-400 p-2 text-lg- w-full uppercase text-slate-600 rounded font-bold hover:bg-cyan-500'
-          onClick={() => mutate(user)}>
+          onClick={() => mutate(queryClient.getQueryData(['user'])!)}>
           Guardar Cambios
         </button>
 

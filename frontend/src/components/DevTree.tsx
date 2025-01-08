@@ -30,10 +30,14 @@ export default function DevTree({data}: DevTreeProps) {
              const order = arrayMove(enabledLinks, prevIndex, newIndex)
 
              setEnabledLinks(order);
+            const disabledLinks: SocialNetwork [] = JSON.parse(data.links).filter((item:SocialNetwork) => !item.enabled)
+
+            const links = order.concat(disabledLinks)
 
              queryClient.setQueryData(['user'],(prevData:User) => {
                 return{
                     ...prevData,
+                    links: JSON.stringify(links)
                     
                 }
              })
@@ -65,7 +69,7 @@ export default function DevTree({data}: DevTreeProps) {
                     <div className="flex justify-end">
                         <Link
                             className="font-bold text-right text-slate-800 text-2xl"
-                            to={''}
+                            to={`/${data.handle}` }
                             target="_blank"
                             rel="noreferrer noopener"
                         >Visitar Mi Perfil: /{data.handle}</Link>
