@@ -15,21 +15,19 @@ export default function LoginView() {
 
   const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
 
-  const handleLogin = async(formData: LoginForm) => {
+  const handleLogin = async (formData: LoginForm) => {
 
     try {
-      const {data} = await api.post(`/auth/login`,formData)
+      const { data } = await api.post(`/auth/login`, formData)
       localStorage.setItem('AUTH_TOKEN', data)    // Almacena el token de autenticacion en localStorage 
-    } 
-    catch (error) {
-        if(isAxiosError (error) && error.response){
-          toast.error(error.response.data.error)
-          
     }
-    
-  }
-    
-    
+    catch (error) {
+      if (isAxiosError(error) && error.response) {
+        toast.error(error.response.data.error)
+
+      }
+    }
+
   }
 
   return (
