@@ -115,7 +115,7 @@ export default function ProfileView() {
 
             <input
               type="submit"
-              className="bg-cyan-400 p-2 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer"
+              className="bg-cyan-400 p-2 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer hover:bg-cyan-500"
               value='Guardar Cambios'
             />
           </form>

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form'
 import ErrorMessage from '../components/ErrorMessage';
 import { LoginForm } from '../types';
@@ -7,7 +7,7 @@ import api from '../config/axios';
 import { isAxiosError } from 'axios';
 
 export default function LoginView() {
-
+  const navigate = useNavigate()
   const initialValues: LoginForm = {
     email: '',
     password: ''
@@ -20,6 +20,7 @@ export default function LoginView() {
     try {
       const { data } = await api.post(`/auth/login`, formData)
       localStorage.setItem('AUTH_TOKEN', data)    // Almacena el token de autenticacion en localStorage 
+      navigate('/admin') //Direcciona al panel de administracion despues de loguearse
     }
     catch (error) {
       if (isAxiosError(error) && error.response) {

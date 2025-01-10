@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {useForm} from 'react-hook-form';
 import { RegisterForm } from "../types";
 import {isAxiosError} from "axios";
@@ -8,21 +8,18 @@ import api from "../config/axios";
 
 
 export default function RegisterView() {
-
- 
-
+  const navigate = useNavigate()
+  const location = useLocation() 
   const initialValues: RegisterForm = {
     name: '',
     email: '',
-    handle: '',
+    handle: location?.state?.handle || '',
     password: '',
     password_confirmation: '',
   }
   const {register, watch,reset, handleSubmit, formState: { errors }} = useForm({defaultValues:initialValues});
   
   const password = watch('password');
-  
-  
 
   const handleRegister = async (formData: RegisterForm) =>{
     
@@ -31,13 +28,12 @@ export default function RegisterView() {
 
       toast.success (data)
 
-      reset()
-      
-      
+      reset()     
+      navigate('/auth/login')    
+
     } catch (error) {
         if(isAxiosError (error) && error.response){
-          toast.error(error.response.data.error)
-          
+          toast.error(error.response.data.error)        
     }
     
   }
