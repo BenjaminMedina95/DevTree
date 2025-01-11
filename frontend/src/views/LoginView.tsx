@@ -5,8 +5,14 @@ import { LoginForm } from '../types';
 import { toast } from 'sonner';
 import api from '../config/axios';
 import { isAxiosError } from 'axios';
+import { useState } from 'react';
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 export default function LoginView() {
+  const [showPassword, setShowPassword] = useState(false)
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
   const navigate = useNavigate()
   const initialValues: LoginForm = {
     email: '',
@@ -60,17 +66,23 @@ export default function LoginView() {
             <ErrorMessage>{errors.email.message}</ErrorMessage>
           )}
         </div>
-        <div className="grid grid-cols-1 space-y-3">
+        <div className="grid grid-cols-1 space-y-3 relative">
           <label htmlFor="password" className="text-2xl text-slate-500">Password</label>
           <input
             id="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="Password de Registro"
-            className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
+            className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400 w-full pr-12"
             {...register("password", {
               required: "El Password es obligatorio",
             })}
           />
+          <div className="absolute right-3 top-12 cursor-pointer text-slate-500"
+            onClick={togglePasswordVisibility}
+          >
+            {showPassword ? <FiEyeOff size={22} /> : <FiEye size={22} />}
+          </div>
+
           {errors.password && (
             <ErrorMessage>{errors.password.message}</ErrorMessage>
           )}
