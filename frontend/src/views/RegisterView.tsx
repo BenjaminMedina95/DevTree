@@ -1,15 +1,25 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {useForm} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { RegisterForm } from "../types";
-import {isAxiosError} from "axios";
-import {toast} from 'sonner'
+import { isAxiosError } from "axios";
+import { toast } from 'sonner'
 import ErrorMessage from "../components/ErrorMessage";
 import api from "../config/axios";
+import { useState } from "react";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 
 export default function RegisterView() {
+  const [showPassword, setShowPassword] = useState(false)
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
+  const [showPassword2, setShowPassword2] = useState(false)
+  const togglePasswordVisibility2 = () => {
+    setShowPassword2(!showPassword2)
+  }
   const navigate = useNavigate()
-  const location = useLocation() 
+  const location = useLocation()
   const initialValues: RegisterForm = {
     name: '',
     email: '',
@@ -17,27 +27,27 @@ export default function RegisterView() {
     password: '',
     password_confirmation: '',
   }
-  const {register, watch,reset, handleSubmit, formState: { errors }} = useForm({defaultValues:initialValues});
-  
+  const { register, watch, reset, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues });
+
   const password = watch('password');
 
-  const handleRegister = async (formData: RegisterForm) =>{
-    
+  const handleRegister = async (formData: RegisterForm) => {
+
     try {
-      const {data} = await api.post(`/auth/register`,formData)
+      const { data } = await api.post(`/auth/register`, formData)
 
-      toast.success (data)
+      toast.success(data)
 
-      reset()     
-      navigate('/auth/login')    
+      reset()
+      navigate('/auth/login')
 
     } catch (error) {
-        if(isAxiosError (error) && error.response){
-          toast.error(error.response.data.error)        
+      if (isAxiosError(error) && error.response) {
+        toast.error(error.response.data.error)
+      }
+
     }
-    
   }
-}
   return (
 
     <>
@@ -54,11 +64,11 @@ export default function RegisterView() {
             type="text"
             placeholder="Tu Nombre"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
-            {...register('name',{
+            {...register('name', {
               required: "El nombre es obligatorio"
             })}
           />
-           {errors.name && <ErrorMessage> {errors.name.message}</ErrorMessage>}
+          {errors.name && <ErrorMessage> {errors.name.message}</ErrorMessage>}
         </div>
         <div className="grid grid-cols-1 space-y-3">
           <label htmlFor="email" className="text-2xl text-slate-500">E-mail</label>
@@ -67,12 +77,12 @@ export default function RegisterView() {
             type="email"
             placeholder="Email de Registro"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
-            {...register('email',{
+            {...register('email', {
               required: "El email es obligatorio",
               pattern: {
                 value: /\S+@\S+\.\S+/,
                 message: "E-mail no válido",
-            },
+              },
             })}
           />
           {errors.email && <ErrorMessage> {errors.email.message}</ErrorMessage>}
@@ -84,21 +94,21 @@ export default function RegisterView() {
             type="text"
             placeholder="Nombre de usuario: sin espacios"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
-            {...register('handle',{
+            {...register('handle', {
               required: "El handle es obligatorio"
             })}
           />
           {errors.handle && <ErrorMessage> {errors.handle.message}</ErrorMessage>}
 
         </div>
-        <div className="grid grid-cols-1 space-y-3">
+        <div className="grid grid-cols-1 space-y-3 relative">
           <label htmlFor="password" className="text-2xl text-slate-500">Password</label>
           <input
             id="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="Password de Registro"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
-            {...register('password',{
+            {...register('password', {
               required: "El password es obligatorio",
               minLength: {
                 value: 8,
@@ -106,22 +116,32 @@ export default function RegisterView() {
               }
             })}
           />
+           <div className="absolute right-3 top-12 cursor-pointer text-slate-500"
+            onClick={togglePasswordVisibility}
+          >
+            {showPassword ? <FiEyeOff size={22} /> : <FiEye size={22} />}
+          </div>
           {errors.password && <ErrorMessage> {errors.password.message}</ErrorMessage>}
 
         </div>
 
-        <div className="grid grid-cols-1 space-y-3">
+        <div className="grid grid-cols-1 space-y-3 relative">
           <label htmlFor="password_confirmation" className="text-2xl text-slate-500">Repetir Password</label>
           <input
             id="password"
-            type="password"
+            type={showPassword2 ? "text" : "password"}
             placeholder="Repetir Password"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
-            {...register('password_confirmation',{
+            {...register('password_confirmation', {
               required: "Confirmar el password es obligatorio",
               validate: (value) => value === password || "Los passwords no coinciden"
             })}
           />
+          <div className="absolute right-3 top-12 cursor-pointer text-slate-500"
+            onClick={togglePasswordVisibility2}
+          >
+            {showPassword2 ? <FiEyeOff size={22} /> : <FiEye size={22} />}
+          </div>
           {errors.password_confirmation && <ErrorMessage> {errors.password_confirmation.message}</ErrorMessage>}
 
         </div>
