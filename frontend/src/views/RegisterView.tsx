@@ -52,10 +52,9 @@ export default function RegisterView() {
 
     <>
       <h1 className="text-4xl text-white font-bold">Crear Cuenta</h1>
-
-      <form
+     <form
         onSubmit={handleSubmit(handleRegister)}
-        className="bg-white px-5 py-16 rounded-lg space-y-10 mt-10"
+        className="bg-white px-5 py-12 rounded-lg space-y-10 mt-10"
       >
         <div className="grid grid-cols-1 space-y-3">
           <label htmlFor="name" className="text-2xl text-slate-500">Nombre</label>

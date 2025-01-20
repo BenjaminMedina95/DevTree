@@ -44,7 +44,7 @@ export default function LoginView() {
 
       <form
         onSubmit={handleSubmit(handleLogin)}
-        className="bg-white px-5 py-20 rounded-lg space-y-10 mt-10"
+        className="bg-white px-5 py-12 rounded-lg space-y-10 mt-10"
         noValidate
       >
         <div className="grid grid-cols-1 space-y-3">
