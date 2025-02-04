@@ -6,10 +6,12 @@ import { toast } from 'sonner';
 import api from '../config/axios';
 import { isAxiosError } from 'axios';
 import { useState } from 'react';
-import { FiEye, FiEyeOff } from "react-icons/fi";
+import { FiEye, FiEyeOff} from "react-icons/fi";
+import { LoadingButton } from '../components/LoadingButton';
 
 export default function LoginView() {
   const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] =useState(false)
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
@@ -23,6 +25,8 @@ export default function LoginView() {
 
   const handleLogin = async (formData: LoginForm) => {
 
+    setLoading(true)
+
     try {
       const { data } = await api.post(`/auth/login`, formData)
       localStorage.setItem('AUTH_TOKEN', data)    // Almacena el token de autenticacion en localStorage 
@@ -33,6 +37,9 @@ export default function LoginView() {
         toast.error(error.response.data.error)
 
       }
+    }
+    finally{
+      setLoading(false)
     }
 
   }
@@ -88,11 +95,14 @@ export default function LoginView() {
           )}
         </div>
 
-        <input
+        <button
           type="submit"
-          className="bg-cyan-400 p-3 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer"
-          value='Iniciar Sesión'
-        />
+          className="bg-cyan-400 p-3 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer flex items-center justify-center"
+          disabled={loading} 
+        >
+         <LoadingButton loading={loading} text="Iniciar Sesión" type="submit" />
+        </button>
+
       </form>
 
       <nav className='mt-10'>
