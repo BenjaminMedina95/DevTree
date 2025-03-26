@@ -87,7 +87,7 @@ export default function RegisterView() {
           {errors.email && <ErrorMessage> {errors.email.message}</ErrorMessage>}
         </div>
         <div className="grid grid-cols-1 space-y-3">
-          <label htmlFor="handle" className="text-2xl text-slate-500">Handle</label>
+          <label htmlFor="handle" className="text-2xl text-slate-500">Usuario</label>
           <input
             id="handle"
             type="text"
